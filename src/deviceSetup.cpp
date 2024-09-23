@@ -24,6 +24,13 @@ deviceSetup::deviceSetup(int ledPin, bool startState, unsigned long blinkInterva
     digitalWrite(ledPin, startState ? HIGH : LOW);  // Set initial LED state
 }
 
+// Constructor for Piezo Buzzer
+deviceSetup::deviceSetup(int buzzerPin, BuzzerType type) {
+    _buzzerPin = buzzerPin;
+    _buzzerType = type;
+    pinMode(buzzerPin, OUTPUT);  // Initialize the buzzer pin
+}
+
 // Function to turn LED on
 void deviceSetup::setOn() {
     _isBlinking = false;
@@ -56,7 +63,7 @@ void deviceSetup::updateLED() {
     }
 }
 
-// Existing button reading function (unchanged)
+// Function to read button state
 void deviceSetup::readButton() {
     unsigned long currentTime = millis();
     
@@ -77,5 +84,25 @@ void deviceSetup::readButton() {
             _pressStartTime = 0;
             _isHeld = false;
         }
+    }
+}
+
+// Function to play a tone on the buzzer
+void deviceSetup::playTone(int frequency, unsigned long duration) {
+    if (_buzzerType == ACTIVE) {
+        digitalWrite(_buzzerPin, HIGH);  // Turn on the active buzzer
+        delay(duration);
+        digitalWrite(_buzzerPin, LOW);   // Turn off the active buzzer
+    } else {
+        tone(_buzzerPin, frequency, duration);  // Use tone for passive buzzer
+    }
+}
+
+// Function to stop any tone being played
+void deviceSetup::stopTone() {
+    if (_buzzerType == PASSIVE) {
+        noTone(_buzzerPin);
+    } else {
+        digitalWrite(_buzzerPin, LOW);  // Ensure active buzzer is off
     }
 }

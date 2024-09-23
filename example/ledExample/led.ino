@@ -1,13 +1,18 @@
 #include <deviceSetup.h>
 
-// Button and LED objects
-deviceSetup led1(PIN_LED_1, false, 500);  // LED 1 starts off with a 500ms blink interval
+// LED object
+deviceSetup led1(PIN_LED_1, false, 500);  // Starts off with a 500ms blink interval
 
 void setup() {
-    // Initialize components
+    // Initialize components here
 }
 
 void loop() {
-    // Continuously update LED state
-    led1.updateLED();
+    led1.updateLED();  // Continuously update LED blinking state
+}
+
+void someFunction() {
+    led1.setOn();    // Turn LED on
+    led1.setOff();   // Turn LED off
+    led1.setBlink(300);  // Set LED to blink with 300ms interval
 }
